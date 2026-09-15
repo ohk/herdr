@@ -343,6 +343,7 @@ pub(crate) fn session_identity_only_integration(source: &str, agent_label: &str)
             | ("herdr:qwen", "qwen")
             | ("herdr:letta", "letta")
             | ("herdr:antigravity_cli", "agy")
+            | ("herdr:muse", "muse")
     )
 }
 
@@ -1058,6 +1059,9 @@ mod tests {
             ("herdr:qwen", "qwen", Agent::Qwen),
             ("herdr:letta", "letta", Agent::Letta),
             ("herdr:antigravity_cli", "agy", Agent::Antigravity),
+            // Session-only by design: Muse emits no Interrupt event and no
+            // Stop on cancel, so lifecycle authority would stick after Esc.
+            ("herdr:muse", "muse", Agent::Muse),
         ] {
             assert!(!full_lifecycle_hook_authority(source, label));
             assert!(session_identity_only_integration(source, label));
