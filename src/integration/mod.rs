@@ -320,6 +320,25 @@ const GROK_HOOK_ASSET: &str = if cfg!(windows) {
     include_str!("assets/grok/herdr-agent-state.sh")
 };
 const GROK_INTEGRATION_VERSION: u32 = 2;
+const MUSE_HOOK_INSTALL_NAME: &str = if cfg!(windows) {
+    "herdr-agent-state.ps1"
+} else {
+    "herdr-agent-state.sh"
+};
+const MUSE_HOOK_ASSET: &str = if cfg!(windows) {
+    include_str!("assets/muse/herdr-agent-state.ps1")
+} else {
+    include_str!("assets/muse/herdr-agent-state.sh")
+};
+const MUSE_INTEGRATION_VERSION: u32 = 1;
+/// `(event, matcher, reported action)`. Muse hook entries are Claude-shaped
+/// (`{matcher, hooks: [{type, command, timeout}]}`); no event needs a matcher
+/// yet, so all matchers are `None`. Session identity only: Muse emits no
+/// `Interrupt` hook event and synthesizes no `Stop` on cancel, so lifecycle
+/// reporting would stick on working after every Esc with nothing to clear it.
+/// State stays with screen manifest plus OSC detection (same rationale as the
+/// Devin integration); hooks report the session ref for native resume.
+const MUSE_HOOK_EVENTS: [(&str, Option<&str>, &str); 1] = [("SessionStart", None, "session")];
 
 pub(crate) const INSTALL_WARNING_PREFIX: &str = "warning:";
 
